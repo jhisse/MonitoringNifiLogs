@@ -17,6 +17,23 @@
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
+
+    <appender name="4telegraf" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${org.apache.nifi.bootstrap.config.log.dir}/4telegraf.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${org.apache.nifi.bootstrap.config.log.dir}/4telegraf_%d{yyyy-MM-dd_HH}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <immediateFlush>true</immediateFlush>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%date{'yyyy-MM-dd'T'HH:mm:ssXXX'}; %level; %replace(%replace(%msg){';',','}){'[\s\n\r]',' '}%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+            <appender-ref ref="4telegraf"/>
+    </root>
     
     <appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${org.apache.nifi.bootstrap.config.log.dir}/nifi-app.log</file>
@@ -79,23 +96,6 @@
             <pattern>%date %level [%thread] %logger{40} %msg%n</pattern>
         </encoder>
     </appender>
-
-    <appender name="4telegraf" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${org.apache.nifi.bootstrap.config.log.dir}/4telegraf.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${org.apache.nifi.bootstrap.config.log.dir}/4telegraf_%d{yyyy-MM-dd_HH}.%i.log</fileNamePattern>
-            <maxFileSize>100MB</maxFileSize>
-            <maxHistory>30</maxHistory>
-        </rollingPolicy>
-        <immediateFlush>true</immediateFlush>
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%date{'yyyy-MM-dd'T'HH:mm:ssXXX'}; %level; %replace(%replace(%msg){';',','}){'[\s\n\r]',' '}%n</pattern>
-        </encoder>
-    </appender>
-
-    <root level="INFO">
-            <appender-ref ref="4telegraf"/>
-    </root>
     
     <!-- valid logging levels: TRACE, DEBUG, INFO, WARN, ERROR -->
     
